@@ -3,67 +3,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ishaq NETLIVE</title>
+<title>Ishaq Premium Live</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:sans-serif;background:#0b0b0f;color:#fff;min-height:100vh}
-header{padding:20px 40px;font-size:24px;font-weight:700;border-bottom:1px solid rgba(229,9,20,.4);color:#e50914}
-.hero{padding:60px 40px 40px 40px}
-.hero h1{font-size:42px;color:#e50914;margin-bottom:10px}
-.hero p{opacity:.7;font-size:16px}
-.section{padding:30px 40px 60px 40px}
-.section h2{margin-bottom:20px;font-size:20px;font-weight:500;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px}
-.card{background:#15151c;border-radius:12px;padding:30px 10px;text-align:center;cursor:pointer;transition:.25s;border:1px solid rgba(229,9,20,.15);font-weight:500;text-decoration:none;color:#fff;display:flex;align-items:center;justify-content:center;height:80px}
-.card:hover{transform:translateY(-6px);background:#1f1f29;border-color:#e50914;box-shadow:0 8px 25px rgba(229,9,20,.4);color:#e50914}
-@media(max-width:768px){
-  header{padding:15px 20px;font-size:20px}
-  .hero{padding:40px 20px}
-  .hero h1{font-size:28px}
-  .section{padding:20px}
-  .grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg,#0f0f14,#1a1a22);
+  color:#fff;
+  min-height:100vh;
+}
+
+header{
+  padding:25px 50px;
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:2px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.section{
+  padding:50px;
+}
+
+.section h2{
+  font-size:22px;
+  margin-bottom:30px;
+  font-weight:500;
+  color:#e50914;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:25px;
+}
+
+.card{
+  background:rgba(255,255,255,0.04);
+  border-radius:18px;
+  padding:40px 20px;
+  text-align:center;
+  font-size:18px;
+  cursor:pointer;
+  transition:0.3s ease;
+  border:1px solid rgba(255,255,255,0.05);
+  backdrop-filter:blur(8px);
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.05);
+  background:rgba(229,9,20,0.15);
+  border:1px solid #e50914;
+  box-shadow:0 15px 40px rgba(229,9,20,0.4);
+  color:#e50914;
 }
 </style>
 </head>
+
 <body>
 
-<header>Ishaq NETLIVE</header>
-
-<div class="hero">
-<h1>تماشای زنده شبکه‌ها</h1>
-<p>روی هر شبکه کلیک کنید تا لینک مستقیم آن در مرورگر باز شود</p>
-</div>
+<header>Ishaq Premium Live</header>
 
 <div class="section">
-<h2>شبکه‌های زنده</h2>
+<h2>شبکه های زنده</h2>
+
 <div class="grid">
 
-<!-- لینک‌ها بدون پلیر -->
-<a class="card" href="https://stream1.liveland.af/hls/tv/tolo/chunklist0.m3u8" target="_blank">طلوع</a>
-<a class="card" href="https://kbl-stream.movie.af/live/smil:tolotv.smil/chunklist_w594705989_b5128000.m3u8" target="_blank">طلوع 2</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/tolo/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:tolotv.smil/chunklist_w594705989_b5128000.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=3&platform=web')">طلوع</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/varzesh/chunklist0.m3u8" target="_blank">ورزش</a>
-<a class="card" href="https://kbl-stream.movie.af/live/smil:irvarzeshtv.smil/playlist.m3u8" target="_blank">ورزش 2</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/varzesh/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:irvarzeshtv.smil/playlist.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=12&platform=web')">ورزش</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/irib-3/chunklist0.m3u8" target="_blank">شبکه سه</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/irib-3/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:iribtv3.smil/chunklist_w1952007214_b5128000.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=11&platform=web')">شبکه سه</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/persiana-sports/chunklist0.m3u8" target="_blank">پرشیا اسپورت</a>
-<a class="card" href="https://kbl-stream.movie.af/live/smil:persiasptv.smil/playlist.m3u8" target="_blank">پرشیا اسپورت 2</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/persiana-sports/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:persiasptv.smil/playlist.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=15&platform=web')">پرشیا اسپورت</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/solh-sports/chunklist0.m3u8" target="_blank">صلح اسپورت</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/solh-sports/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:solhetv.smil/playlist.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=23&platform=web')">صلح اسپورت</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/ariana/chunklist0.m3u8" target="_blank">آریانا</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/ariana/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:atntv.smil/playlist.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=21&platform=web')">آریانا</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/arezo/chunklist0.m3u8" target="_blank">آرزو</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/arezo/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:arezotv.smil/playlist.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=31&platform=web')">آرزو</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/meraj/chunklist0.m3u8" target="_blank">معراج</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/meraj/chunklist0.m3u8','https://stream1.liveland.af/hls/tv/meraj/chunklist0.m3u8')">معراج</div>
 
-<a class="card" href="https://kbl-stream.movie.af/live/smil:gemtv.smil/playlist.m3u8" target="_blank">شبکه جیم</a>
+<div class="card" onclick="openDual('https://kbl-stream.movie.af/live/smil:gemtv.smil/playlist.m3u8?profileId=4c6cc9e1-a8f9-405a-ba3d-a95b05dc555a&channelId=32&platform=web')">شبکه جیم</div>
 
-<a class="card" href="https://stream1.liveland.af/hls/tv/persiana-sports-2/chunklist0.m3u8" target="_blank">2 پرشیا اسپورت</a>
+<div class="card" onclick="openDual('https://stream1.liveland.af/hls/tv/persiana-sports-2/chunklist0.m3u8','https://kbl-stream.movie.af/live/smil:persianasp2.smil/playlist.m3u8?profileId=a53a5d27-2242-444e-b013-6706e4e9ba1b&channelId=20&platform=web')">پرشیا اسپورت 2</div>
 
 </div>
 </div>
+
+<script>
+function openDual(link1, link2){
+  const win = window.open(link1, "_blank");
+  setTimeout(()=>{
+    if(!win || win.closed || typeof win.closed=='undefined'){
+      window.open(link2, "_blank");
+    }
+  },800);
+}
+</script>
 
 </body>
 </html>
