@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ishaq NETLIVE</title>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.15"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:sans-serif;background:#0b0b0f;color:#fff;min-height:100vh}
@@ -15,14 +14,8 @@ header{padding:20px 40px;font-size:24px;font-weight:700;border-bottom:1px solid 
 .section{padding:30px 40px 60px 40px}
 .section h2{margin-bottom:20px;font-size:20px;font-weight:500;color:#fff}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px}
-.card{background:#15151c;border-radius:12px;padding:30px 10px;text-align:center;cursor:pointer;transition:.25s;border:1px solid rgba(229,9,20,.15);font-weight:500}
+.card{background:#15151c;border-radius:12px;padding:30px 10px;text-align:center;cursor:pointer;transition:.25s;border:1px solid rgba(229,9,20,.15);font-weight:500;text-decoration:none;color:#fff;display:flex;align-items:center;justify-content:center;height:80px}
 .card:hover{transform:translateY(-6px);background:#1f1f29;border-color:#e50914;box-shadow:0 8px 25px rgba(229,9,20,.4);color:#e50914}
-.player-container{display:none;position:fixed;inset:0;background:#000;justify-content:center;align-items:center;flex-direction:column;z-index:999}
-video{width:90%;max-width:1200px;border-radius:16px;box-shadow:0 0 60px rgba(229,9,20,.6)}
-.close-btn{position:absolute;top:20px;right:30px;font-size:30px;cursor:pointer;color:#e50914}
-.link-switch{margin-top:20px}
-.link-switch button{padding:10px 20px;margin:5px;background:#15151c;color:#fff;border:1px solid rgba(229,9,20,.4);border-radius:8px;cursor:pointer;transition:.3s}
-.link-switch button:hover{background:#e50914}
 @media(max-width:768px){
   header{padding:15px 20px;font-size:20px}
   .hero{padding:40px 20px}
@@ -38,76 +31,39 @@ video{width:90%;max-width:1200px;border-radius:16px;box-shadow:0 0 60px rgba(229
 
 <div class="hero">
 <h1>تماشای زنده شبکه‌ها</h1>
-<p>روی هر شبکه که کلیک کنید، همان لینک مستقیم باز می‌شود</p>
+<p>روی هر شبکه کلیک کنید تا لینک مستقیم آن در مرورگر باز شود</p>
 </div>
 
 <div class="section">
 <h2>شبکه‌های زنده</h2>
 <div class="grid">
 
-<!-- تمام لینک‌ها -->
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/tolo/chunklist0.m3u8')">طلوع</div>
-<div class="card" onclick="openPlayer('https://kbl-stream.movie.af/live/smil:tolotv.smil/chunklist_w594705989_b5128000.m3u8')">طلوع 2</div>
+<!-- لینک‌ها بدون پلیر -->
+<a class="card" href="https://stream1.liveland.af/hls/tv/tolo/chunklist0.m3u8" target="_blank">طلوع</a>
+<a class="card" href="https://kbl-stream.movie.af/live/smil:tolotv.smil/chunklist_w594705989_b5128000.m3u8" target="_blank">طلوع 2</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/varzesh/chunklist0.m3u8')">ورزش</div>
-<div class="card" onclick="openPlayer('https://kbl-stream.movie.af/live/smil:irvarzeshtv.smil/playlist.m3u8')">ورزش 2</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/varzesh/chunklist0.m3u8" target="_blank">ورزش</a>
+<a class="card" href="https://kbl-stream.movie.af/live/smil:irvarzeshtv.smil/playlist.m3u8" target="_blank">ورزش 2</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/irib-3/chunklist0.m3u8')">شبکه سه</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/irib-3/chunklist0.m3u8" target="_blank">شبکه سه</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/persiana-sports/chunklist0.m3u8')">پرشیا اسپورت</div>
-<div class="card" onclick="openPlayer('https://kbl-stream.movie.af/live/smil:persiasptv.smil/playlist.m3u8')">پرشیا اسپورت 2</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/persiana-sports/chunklist0.m3u8" target="_blank">پرشیا اسپورت</a>
+<a class="card" href="https://kbl-stream.movie.af/live/smil:persiasptv.smil/playlist.m3u8" target="_blank">پرشیا اسپورت 2</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/solh-sports/chunklist0.m3u8')">صلح اسپورت</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/solh-sports/chunklist0.m3u8" target="_blank">صلح اسپورت</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/ariana/chunklist0.m3u8')">آریانا</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/ariana/chunklist0.m3u8" target="_blank">آریانا</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/arezo/chunklist0.m3u8')">آرزو</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/arezo/chunklist0.m3u8" target="_blank">آرزو</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/meraj/chunklist0.m3u8')">معراج</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/meraj/chunklist0.m3u8" target="_blank">معراج</a>
 
-<div class="card" onclick="openPlayer('https://kbl-stream.movie.af/live/smil:gemtv.smil/playlist.m3u8')">شبکه جیم</div>
+<a class="card" href="https://kbl-stream.movie.af/live/smil:gemtv.smil/playlist.m3u8" target="_blank">شبکه جیم</a>
 
-<div class="card" onclick="openPlayer('https://stream1.liveland.af/hls/tv/persiana-sports-2/chunklist0.m3u8')">2 پرشیا اسپورت</div>
+<a class="card" href="https://stream1.liveland.af/hls/tv/persiana-sports-2/chunklist0.m3u8" target="_blank">2 پرشیا اسپورت</a>
 
 </div>
 </div>
-
-<div class="player-container" id="playerContainer">
-<div class="close-btn" onclick="closePlayer()">✕</div>
-<video id="video" controls autoplay playsinline crossorigin="anonymous"></video>
-</div>
-
-<script>
-let hls;
-const video=document.getElementById('video');
-const container=document.getElementById('playerContainer');
-
-function openPlayer(url){
-  container.style.display="flex";
-  if(hls){ hls.destroy(); hls=null; }
-
-  if(Hls.isSupported()){
-    hls = new Hls();
-    hls.loadSource(url);
-    hls.attachMedia(video);
-    hls.on(Hls.Events.MANIFEST_PARSED, ()=>{ video.play().catch(()=>{}); });
-    hls.on(Hls.Events.ERROR,(event,data)=>{
-      if(data.fatal){
-        alert("استریم در دسترس نیست یا مرورگر اجازه پخش نمی‌دهد");
-      }
-    });
-  } else {
-    video.src = url;
-    video.play().catch(()=>{});
-  }
-}
-
-function closePlayer(){
-  container.style.display="none";
-  video.pause();
-  if(hls){ hls.destroy(); hls=null; }
-}
-</script>
 
 </body>
 </html>
