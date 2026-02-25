@@ -3,155 +3,168 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ishaq Premium IPTV</title>
+<title>Ishaq TV Ultra VIP</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:'Segoe UI',sans-serif;
-  background:linear-gradient(135deg,#0f0f14,#1c1c26);
-  color:#fff;
-  min-height:100vh;
-  overflow-x:hidden;
+margin:0;
+font-family:'Vazirmatn',sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:#fff;
+text-align:center;
 }
 
 header{
-  padding:25px 50px;
-  font-size:26px;
-  font-weight:700;
-  letter-spacing:2px;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(15px);
-  border-bottom:1px solid rgba(255,255,255,0.05);
-}
-
-.section{
-  padding:40px 50px 60px 50px;
+padding:25px;
+font-size:30px;
+font-weight:bold;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(15px);
 }
 
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:25px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+gap:20px;
+padding:30px;
+max-width:1300px;
+margin:auto;
 }
 
 .card{
-  background:rgba(255,255,255,0.05);
-  border-radius:20px;
-  padding:45px 20px;
-  text-align:center;
-  font-size:18px;
-  cursor:pointer;
-  transition:0.35s ease;
-  border:1px solid rgba(255,255,255,0.07);
-  backdrop-filter:blur(10px);
+padding:25px;
+border-radius:25px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(20px);
+cursor:pointer;
+transition:0.3s;
+font-size:18px;
+font-weight:bold;
 }
 
 .card:hover{
-  transform:translateY(-12px) scale(1.06);
-  background:rgba(229,9,20,0.18);
-  border:1px solid #e50914;
-  box-shadow:0 20px 45px rgba(229,9,20,0.5);
-  color:#e50914;
+transform:scale(1.07);
+background:rgba(255,255,255,0.25);
 }
 
-#playerModal{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.9);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:999;
-}
-
-#playerBox{
-  width:90%;
-  max-width:1000px;
-  background:#000;
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 0 60px rgba(229,9,20,0.6);
-  position:relative;
+#playerPage{
+display:none;
+padding:20px;
 }
 
 video{
-  width:100%;
-  height:auto;
-  display:block;
+width:95%;
+max-width:1100px;
+border-radius:25px;
+box-shadow:0 0 50px rgba(0,0,0,0.7);
 }
 
-.closeBtn{
-  position:absolute;
-  top:10px;
-  right:15px;
-  font-size:28px;
-  cursor:pointer;
-  color:#fff;
+.controls{
+margin-top:15px;
 }
 
-@media(max-width:768px){
-  header{padding:20px;font-size:20px}
-  .section{padding:20px}
+button{
+padding:10px 20px;
+margin:5px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+font-weight:bold;
+background:#00c6ff;
+color:#000;
+transition:0.3s;
+}
+
+button:hover{
+background:#0072ff;
+color:#fff;
 }
 </style>
 </head>
-
 <body>
 
-<header>Ishaq Premium IPTV</header>
+<header>🔥 Ishaq TV ULTRA VIP 🔥</header>
 
-<div class="section">
+<div id="homePage">
 <div class="grid">
 
-<div class="card" onclick="playStream('tolo')">طلوع</div>
-<div class="card" onclick="playStream('varzesh')">ورزش</div>
-<div class="card" onclick="playStream('irib3')">شبکه سه</div>
-<div class="card" onclick="playStream('persiana')">پرشیا اسپورت</div>
-<div class="card" onclick="playStream('solh')">صلح اسپورت</div>
-<div class="card" onclick="playStream('ariana')">آریانا</div>
-<div class="card" onclick="playStream('arezo')">آرزو</div>
-<div class="card" onclick="playStream('meraj')">معراج</div>
-<div class="card" onclick="playStream('persiana2')">پرشیا اسپورت 2</div>
+<div class="card" onclick="openChannel('tolo','طلوع')">طلوع</div>
+<div class="card" onclick="openChannel('varzesh','ورزش')">ورزش</div>
+<div class="card" onclick="openChannel('irib3','شبکه سه')">شبکه سه</div>
+<div class="card" onclick="openChannel('persiana','پرشیا اسپورت')">پرشیا اسپورت</div>
+<div class="card" onclick="openChannel('solh','صلح اسپورت')">صلح اسپورت</div>
+<div class="card" onclick="openChannel('ariana','آریانا')">آریانا</div>
+<div class="card" onclick="openChannel('arezo','آرزو')">آرزو</div>
+<div class="card" onclick="openChannel('meraj','معراج')">معراج</div>
+<div class="card" onclick="openChannel('persiana2','پرشیا اسپورت 2')">پرشیا اسپورت 2</div>
+<div class="card" onclick="openChannel('gem','شبکه جیم')">شبکه جیم</div>
 
 </div>
 </div>
 
-<div id="playerModal">
-  <div id="playerBox">
-    <span class="closeBtn" onclick="closePlayer()">✕</span>
-    <video id="video" controls autoplay></video>
-  </div>
+<div id="playerPage">
+<h2 id="channelTitle"></h2>
+<video id="video" controls autoplay></video>
+
+<div class="controls">
+<button onclick="switchSource('s1')">Source 1</button>
+<button onclick="switchSource('s2')">Source 2</button>
+<button onclick="goBack()">بازگشت</button>
+</div>
 </div>
 
 <script>
-const base = "https://ishaq-proxy.eshaqtv1.workers.dev/";
 
-function playStream(channel){
-  const video = document.getElementById("video");
-  const modal = document.getElementById("playerModal");
-  const streamUrl = base + channel + "/chunklist0.m3u8";
+let currentChannel="";
+let currentSource="s1";
+let hls;
 
-  modal.style.display = "flex";
-
-  if(Hls.isSupported()){
-    const hls = new Hls();
-    hls.loadSource(streamUrl);
-    hls.attachMedia(video);
-  } else if(video.canPlayType('application/vnd.apple.mpegurl')){
-    video.src = streamUrl;
-  }
+function openChannel(channel,name){
+currentChannel=channel;
+currentSource="s1";
+document.getElementById("channelTitle").innerText=name;
+document.getElementById("homePage").style.display="none";
+document.getElementById("playerPage").style.display="block";
+loadStream();
 }
 
-function closePlayer(){
-  const modal = document.getElementById("playerModal");
-  const video = document.getElementById("video");
-  video.pause();
-  video.src="";
-  modal.style.display="none";
+function loadStream(){
+const video=document.getElementById("video");
+const url=`https://ishaq-proxy.eshaqtv1.workers.dev/${currentChannel}/${currentSource}/chunklist0.m3u8`;
+
+if(hls){ hls.destroy(); }
+
+if(Hls.isSupported()){
+hls=new Hls();
+hls.loadSource(url);
+hls.attachMedia(video);
+
+hls.on(Hls.Events.ERROR,function(event,data){
+if(data.fatal && currentSource==="s1"){
+currentSource="s2";
+loadStream();
 }
+});
+
+}else if(video.canPlayType('application/vnd.apple.mpegurl')){
+video.src=url;
+}
+}
+
+function switchSource(source){
+currentSource=source;
+loadStream();
+}
+
+function goBack(){
+if(hls){ hls.destroy(); }
+document.getElementById("playerPage").style.display="none";
+document.getElementById("homePage").style.display="block";
+}
+
 </script>
 
 </body>
