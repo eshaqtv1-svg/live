@@ -47,10 +47,17 @@ object-fit:contain;
 margin-bottom:10px;
 }
 
-#playerPage{
-display:none;
-text-align:center;
-padding:20px;
+#playerPage {
+  position: fixed;    /* قرار گرفتن روی کل صفحه */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  z-index: 999;
+  display: none;
+  text-align: center;
+  padding: 10px;
 }
 
 #loading{
@@ -58,11 +65,13 @@ display:none;
 margin-top:20px;
 }
 
-video{
-width:95%;
-max-width:1100px;
-border-radius:20px;
-margin-top:20px;
+video, .plyr {
+  width: 100%;       /* پهنای کامل صفحه */
+  height: 100%;      /* ارتفاع کامل صفحه */
+}
+plyr__video-wrapper {
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 button{
