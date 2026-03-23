@@ -3,83 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ishaq TV Ultra Pro</title>
-
+<title>Ishaq TV Ultra</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-<script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Vazirmatn';background:#020617;color:#fff}
-header{text-align:center;padding:25px;font-size:32px;font-weight:900;color:#00ffcc}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-padding:20px;
-max-width:1300px;
-margin:auto;
-}
-
-.card{
-background:#111827;
-border-radius:20px;
-padding:20px;
-text-align:center;
-cursor:pointer;
-transition:.3s;
-}
-
-.card:hover{
-transform:scale(1.05);
-background:#1f2937;
-}
-
-.card img{
-width:50%;
-height:50px;
-top: 50%;
-left: 50%;
-object-fit:contain;
-margin-bottom:10px;
-}
-
-#playerPage{
-display:none;
-text-align:center;
-padding:20px;
-}
-
-#loading{
-display:none;
-margin-top:20px;
-}
-
-video{
-width:95%;
-max-width:1100px;
-border-radius:20px;
-margin-top:20px;
-}
-
-button{
-margin-top:20px;
-padding:12px 25px;
-border:none;
-border-radius:20px;
-background:#00ffcc;
-color:#000;
-cursor:pointer;
-font-weight:bold;
-}
+body{font-family:'Vazirmatn',sans-serif;background:radial-gradient(circle at top,#111827,#0f172a,#020617);color:#fff;overflow-x:hidden;}
+header{text-align:center;padding:35px;font-size:38px;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,#00f5ff,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;padding:40px;max-width:1400px;margin:auto;}
+.card{background:rgba(255,255,255,0.05);border-radius:30px;padding:25px;text-align:center;backdrop-filter:blur(25px);transition:0.4s;cursor:pointer;position:relative;overflow:hidden;}
+.card:before{content:'';position:absolute;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(0,255,255,0.3),transparent);top:-50%;left:-50%;transform:rotate(25deg);transition:0.7s;}
+.card:hover:before{left:100%;}
+.card:hover{transform:translateY(-12px) scale(1.05);box-shadow:0 0 35px rgba(0,255,255,0.6);}
+.card img{width:100%;height:120px;object-fit:contain;margin-bottom:15px;filter:drop-shadow(0 0 10px rgba(0,255,255,0.6));}
+.card span{font-size:20px;font-weight:700;}
+#playerPage{display:none;text-align:center;padding:30px;position:fixed;top:50%;left:50%;width:50%;height:50%;transform:translate(-50%,-50%);background:black;z-index:999;border-radius:15px;box-shadow:0 0 40px rgba(0,255,255,0.5);}
+.videoWrapper{position:relative;display:inline-block;width:100%;height:100%;}
+video{width:100%;height:100%;border-radius:20px;display:block;}
+#overlayLogo{position:absolute;bottom:15px;left:15px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.5);padding:10px 15px;border-radius:20px;font-weight:700;font-size:18px;color:#00ffcc;backdrop-filter:blur(5px);z-index:10;}
+#overlayLogo img{width:40px;height:40px;object-fit:contain;border-radius:50%;}
+button{margin-top:15px;padding:10px 20px;border:none;border-radius:40px;font-size:16px;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,#00f5ff,#00ff9d);color:#000;transition:0.3s;}
+button:hover{transform:scale(1.1);box-shadow:0 0 25px #00ffcc;}
+#linkSelector{margin-top:15px;padding:10px 15px;font-size:16px;border-radius:20px;border:none;cursor:pointer;}
+footer{text-align:center;padding:20px;opacity:0.4;font-size:14px;}
 </style>
 </head>
-
 <body>
 
 <header>🔥 Ishaq TV 🔥</header>
@@ -90,210 +38,103 @@ font-weight:bold;
 
 <div id="playerPage">
 <h2 id="channelTitle"></h2>
-<div id="loading">⏳ در حال بارگذاری...</div>
-<video id="video" controls playsinline></video>
-<br>
-<button onclick="goBack()">🔙 بازگشت</button>
+<div class="videoWrapper">
+<video id="video" controls autoplay></video>
+<div id="overlayLogo"><img src="" alt="Logo"><span>Ishaq TV</span></div>
 </div>
+<select id="linkSelector" onchange="changeLink()"></select>
+<br>
+<button onclick="goBack()">بازگشت</button>
+</div>
+
+<footer>©️ 2026 Ishaq TV • All Rights Reserved</footer>
 
 <script>
 let hls;
-let player;
-let currentSourceIndex = 0;
+let currentChannel = {};
+let currentLinks = [];
+let currentLevels = [];
 
-/* =======================
-   📡 همه کانال‌ها
-======================= */
-const channels = {
-
-  tolo: {
-    name: "طلوع",
-    logo: "https://cdn1.movieland.af/images/channel-logos/1760950993521-914660414.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/tolo/playlist.m3u8",
-        "https://tgn.bozztv.com/eshgtv-dvrfl05/gin-tolohd/tracks-v1a1/mono.m3u8"
-    ]
-  },
-
-  irib3: {
-    name: "شبکه سه",
-    logo: "https://cdn1.movieland.af/images/channel-logos/1760950993719-124056621.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/irib3/playlist.m3u8"
-    ]
-  },
-
-  varzesh: {
-    name: "ورزش",
-    logo: "https://cdn1.movieland.af/images/channel-logos/1760950993702-549827287.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/varzesh/playlist.m3u8"
-    ]
-  },
-
-  persiana: {
-    name: "پرشیا اسپورت",
-    logo: "https://cdn1.movieland.af/images/channel-logos/1760950993686-807307490.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/persiana/playlist.m3u8"
-    ]
-  },
-
-  persiana2: {
-    name: "پرشیا اسپورت 2",
-    logo: "https://cdn1.movieland.af/images/channels-logos/1763529079539-200808624.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/persiana2/playlist.m3u8"
-    ]
-  },
-
-  solh: {
-    name: "صلح اسپورت",
-    logo: "https://cdn1.movieland.af/images/channels-logos/1769243953209-579707064.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/solh/playlist.m3u8"
-    ]
-  },
-
-  sportsaf: {
-    name: "Sports AF",
-    logo: "https://cdn1.movieland.af/images/channels-logos/1768027145119-177342014.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/sportsaf/playlist.m3u8"
-    ]
-  },
-
-  arezo: {
-    name: "آرزو",
-    logo: "https://cdn1.movieland.af/images/channel-logos/1760950993620-281627637.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/arezo/playlist.m3u8"
-    ]
-  },
-
-  ariana: {
-    name: "آریانا",
-    logo: "https://cdn1.movieland.af/images/channel-logos/1760950993561-302702845.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/ariana/playlist.m3u8"
-    ]
-  },
-
-  meraj: {
-    name: "معراج",
-    logo: "https://cdn1.movieland.af/images/channels-logos/1769234333004-354961839.svg",
-    sources: [
-      "https://ishaq-proxy.eshaqtv1.workers.dev/meraj/playlist.m3u8"
-    ]
-  }
-
-};
-
-/* =======================
-   🧱 ساخت کارت‌ها
-======================= */
-const grid = document.getElementById("channelGrid");
-
-for(let key in channels){
-  const ch = channels[key];
-
-  const div = document.createElement("div");
-  div.className = "card";
-  div.onclick = () => openChannel(key);
-
-  div.innerHTML = `
-    <img src="${ch.logo}">
-    <span>${ch.name}</span>
-  `;
-
-  grid.appendChild(div);
-}
-
-/* =======================
-   ▶️ باز کردن کانال
-======================= */
-function openChannel(key){
-  const ch = channels[key];
-
-  document.getElementById("channelTitle").innerText = ch.name;
-  document.getElementById("homePage").style.display="none";
-  document.getElementById("playerPage").style.display="block";
-
-  currentSourceIndex = 0;
-  loadStream(ch.sources);
-}
-
-/* =======================
-   🎬 پخش استریم با fallback
-======================= */
-function loadStream(sources){
-  const video = document.getElementById("video");
-  document.getElementById("loading").style.display="block";
-
-  if(hls) hls.destroy();
-
-  function tryNext(){
-    if(currentSourceIndex >= sources.length){
-      alert("❌ هیچ استریمی کار نمی‌کند");
-      return;
+async function loadChannels(){
+    const res = await fetch('https://YOUR_WORKER_DOMAIN/'); // Worker endpoint که JSON لینک‌ها را می‌دهد
+    const data = await res.json(); // باید Worker لینک‌ها را JSON بدهد
+    const grid = document.getElementById("channelGrid");
+    for(let key in data){
+        const ch = data[key];
+        const div = document.createElement("div");
+        div.className="card";
+        div.innerHTML=`<img src="${ch.logo}"><span>${ch.name}</span>`;
+        div.onclick = ()=>openChannel(key, data);
+        grid.appendChild(div);
     }
+}
 
-    const url = sources[currentSourceIndex];
+function openChannel(key, channels){
+    currentChannel = channels[key];
+    currentLinks = currentChannel.sources;
+    document.getElementById("channelTitle").innerText=currentChannel.name;
+    document.getElementById("overlayLogo").querySelector("img").src=currentChannel.logo;
+    document.getElementById("homePage").style.display="none";
+    document.getElementById("playerPage").style.display="block";
 
+    loadStream(currentLinks[0]); // اولین لینک
+    updateLinkSelector();
+}
+
+function loadStream(url){
+    const video = document.getElementById("video");
+    if(hls){hls.destroy();}
     if(Hls.isSupported()){
-      hls = new Hls();
-      hls.loadSource(url);
-      hls.attachMedia(video);
-
-      hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        document.getElementById("loading").style.display="none";
-
-        const levels = hls.levels;
-
-        const qualities = levels
-          .map(l => l.height)
-          .filter(q => q === 720 || q === 1080);
-
-        player = new Plyr(video, {
-          settings: ['quality','speed','fullscreen'],
-          quality: {
-            default: qualities.includes(720) ? 720 : qualities[0],
-            options: qualities,
-            forced: true,
-            onChange: (q) => {
-              const index = levels.findIndex(l => l.height === q);
-              hls.currentLevel = index;
-            }
-          }
+        hls = new Hls({enableWorker:true});
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED,function(){
+            video.play();
+            currentLevels = hls.levels;
         });
-
-        video.play();
-      });
-
-      hls.on(Hls.Events.ERROR, function(event, data){
-        if(data.fatal){
-          currentSourceIndex++;
-          tryNext();
-        }
-      });
-
-    } else {
-      video.src = url;
-      video.play();
+        hls.on(Hls.Events.ERROR,function(event,data){
+            if(data.fatal){nextLink();}
+        });
+    } else if(video.canPlayType('application/vnd.apple.mpegurl')){
+        video.src=url;
+        video.addEventListener('loadedmetadata',()=>video.play());
     }
-  }
-
-  tryNext();
 }
 
-/* =======================
-   🔙 برگشت
-======================= */
+function nextLink(){
+    const currentIndex = currentLinks.indexOf(hls.url || document.getElementById("video").src);
+    const next = currentIndex+1;
+    if(next<currentLinks.length){
+        loadStream(currentLinks[next]);
+        document.getElementById("linkSelector").value=next;
+    } else{
+        alert("تمام لینک‌ها خراب هستند");
+    }
+}
+
+function updateLinkSelector(){
+    const sel = document.getElementById("linkSelector");
+    sel.innerHTML="";
+    currentLinks.forEach((l,i)=>{
+        const opt = document.createElement("option");
+        opt.value=i;
+        opt.text="لینک "+(i+1);
+        sel.appendChild(opt);
+    });
+}
+
+function changeLink(){
+    const index = document.getElementById("linkSelector").value;
+    loadStream(currentLinks[index]);
+}
+
 function goBack(){
-  if(hls) hls.destroy();
-  document.getElementById("playerPage").style.display="none";
-  document.getElementById("homePage").style.display="block";
+    if(hls){hls.destroy();}
+    document.getElementById("playerPage").style.display="none";
+    document.getElementById("homePage").style.display="block";
 }
+
+loadChannels();
 </script>
 
 </body>
