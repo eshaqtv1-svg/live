@@ -56,7 +56,7 @@ let currentLinks = [];
 let currentLevels = [];
 
 async function loadChannels(){
-    const res = await fetch('https://YOUR_WORKER_DOMAIN/'); // Worker URL
+    const res = await fetch('https://eshaqtv1-svg-worker.example.workers.dev/');
     const data = await res.json();
     const grid = document.getElementById("channelGrid");
     for(let key in data){
