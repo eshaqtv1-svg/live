@@ -4,6 +4,155 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ishaq TV Ultra</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Vazirmatn',sans-serif;background:radial-gradient(circle at top,#111827,#0f172a,#020617);color:#fff;overflow-x:hidden;}
+header{text-align:center;padding:35px;font-size:38px;font-weight:900;letter-spacing:2px;background:linear-gradient(90deg,#00f5ff,#00ff9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;padding:40px;max-width:1400px;margin:auto;}
+.card{background:rgba(255,255,255,0.05);border-radius:30px;padding:25px;text-align:center;backdrop-filter:blur(25px);transition:0.4s;cursor:pointer;position:relative;overflow:hidden;}
+.card:before{content:'';position:absolute;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(0,255,255,0.3),transparent);top:-50%;left:-50%;transform:rotate(25deg);transition:0.7s;}
+.card:hover:before{left:100%;}
+.card:hover{transform:translateY(-12px) scale(1.05);box-shadow:0 0 35px rgba(0,255,255,0.6);}
+.card img{width:100%;height:120px;object-fit:contain;margin-bottom:15px;}
+.card span{font-size:20px;font-weight:700;}
+#playerPage{display:none;text-align:center;padding:30px;animation:fadeIn 0.5s ease-in-out;position:relative;}
+.videoWrapper{position:relative;display:inline-block;}
+video{width:95%;max-width:1200px;border-radius:30px;box-shadow:0 0 60px rgba(0,0,0,0.4);display:block;}
+#overlayLogo{position:absolute;bottom:15px;left:15px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.5);padding:10px 15px;border-radius:20px;font-weight:700;font-size:18px;color:#00ffcc;backdrop-filter:blur(5px);z-index:10;}
+#overlayLogo img{width:40px;height:40px;object-fit:contain;border-radius:50%;}
+button{margin-top:25px;padding:14px 30px;border:none;border-radius:40px;font-size:17px;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,#00f5ff,#00ff9d);color:#000;transition:0.3s;}
+button:hover{transform:scale(1.05);box-shadow:0 0 25px #00ffcc;}
+#qualityButtons{margin-top:15px;display:flex;justify-content:center;gap:15px;}
+.qualityBtn{padding:8px 20px;border:none;border-radius:20px;background:#00f5ff;color:#000;font-weight:700;cursor:pointer;transition:0.3s;}
+.qualityBtn:hover{transform:scale(1.05);box-shadow:0 0 20px #00ffcc;}
+@keyframes fadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+footer{text-align:center;padding:30px;opacity:0.4;font-size:14px;}
+</style>
+
+</head>
+<body>
+
+<header>🔥 Ishaq TV Ultra 🔥</header>
+
+<div id="homePage">
+<div class="grid" id="channelGrid"></div>
+</div>
+
+<div id="playerPage">
+<h2 id="channelTitle"></h2>
+<div class="videoWrapper">
+<video id="video" controls autoplay></video>
+<div id="overlayLogo">
+  <img src="" alt="Logo">
+  <span id="overlayName"></span>
+</div>
+</div>
+
+<div id="qualityButtons">
+  <button class="qualityBtn" onclick="setQuality('auto')">Auto</button>
+  <button class="qualityBtn" onclick="setQuality('720')">720p</button>
+  <button class="qualityBtn" onclick="setQuality('1080')">1080p</button>
+</div>
+
+<br>
+<button onclick="goBack()">بازگشت</button>
+</div>
+
+<footer>©️ 2026 Ishaq TV • All Rights Reserved</footer>
+
+<script>
+// ——— لیست کانال‌ها ———
+const channels = [
+  {name:'طلوع', logo:'https://cdn1.movieland.af/images/channel-logos/1760950993521-914660414.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/tolo/playlist.m3u8',720:'',1080:''}},
+  {name:'شبکه سه', logo:'https://cdn1.movieland.af/images/channel-logos/1760950993719-124056621.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/irib3/playlist.m3u8',720:'',1080:''}},
+  {name:'ورزش', logo:'https://cdn1.movieland.af/images/channel-logos/1760950993702-549827287.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/varzesh/playlist.m3u8',720:'',1080:''}},
+  {name:'پرشیا اسپورت', logo:'https://cdn1.movieland.af/images/channel-logos/1760950993686-807307490.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/persiana/playlist.m3u8',720:'',1080:''}},
+  {name:'پرشیا اسپورت 2', logo:'https://cdn1.movieland.af/images/channels-logos/1763529079539-200808624.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/persiana2/playlist.m3u8',720:'',1080:''}},
+  {name:'صلح اسپورت', logo:'https://cdn1.movieland.af/images/channels-logos/1769243953209-579707064.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/solh/playlist.m3u8',720:'',1080:''}},
+  {name:'Sports AF', logo:'https://cdn1.movieland.af/images/channels-logos/1768027145119-177342014.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/sportsaf/playlist.m3u8',720:'',1080:''}},
+  {name:'آرزو', logo:'https://cdn1.movieland.af/images/channel-logos/1760950993620-281627637.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/arezo/playlist.m3u8',720:'',1080:''}},
+  {name:'آریانا', logo:'https://cdn1.movieland.af/images/channel-logos/1760950993561-302702845.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/ariana/playlist.m3u8',720:'',1080:''}},
+  {name:'معراج', logo:'https://cdn1.movieland.af/images/channels-logos/1769234333004-354961839.svg',
+   links:{auto:'https://ishaq-proxy.eshaqtv1.workers.dev/meraj/playlist.m3u8',720:'',1080:''}}
+];
+
+// ——— نمایش لیست کانال‌ها ———
+const grid = document.getElementById('channelGrid');
+channels.forEach(ch => {
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.onclick = () => openChannel(ch);
+  div.innerHTML = `<img src="${ch.logo}"><span>${ch.name}</span>`;
+  grid.appendChild(div);
+});
+
+let hls;
+let currentChannel;
+
+// ——— باز کردن کانال و پخش ———
+function openChannel(ch) {
+  currentChannel = ch;
+  document.getElementById('channelTitle').innerText = ch.name;
+  document.getElementById('overlayName').innerText = ch.name;
+  document.querySelector('#overlayLogo img').src = ch.logo;
+
+  document.getElementById('homePage').style.display = 'none';
+  document.getElementById('playerPage').style.display = 'block';
+
+  playStream('auto');
+}
+
+// ——— پخش بر اساس کیفیت ———
+function playStream(quality){
+  const video = document.getElementById('video');
+  let url = currentChannel.links[quality] || currentChannel.links.auto;
+
+  if(hls){ hls.destroy(); }
+
+  if(Hls.isSupported()){
+    hls = new Hls({maxBufferLength:60, enableWorker:true});
+    hls.loadSource(url);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+  } else if(video.canPlayType('application/vnd.apple.mpegurl')){
+    video.src = url;
+    video.addEventListener('loadedmetadata', () => video.play());
+  }
+}
+
+// ——— دکمه کیفیت ———
+function setQuality(q){
+  playStream(q);
+}
+
+// ——— بازگشت به خانه ———
+function goBack() {
+  if(hls){ hls.destroy(); }
+  document.getElementById('playerPage').style.display = 'none';
+  document.getElementById('homePage').style.display = 'block';
+}
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ishaq TV Ultra</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <style>
