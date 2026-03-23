@@ -56,20 +56,20 @@ let currentLinks = [];
 let currentLevels = [];
 
 async function loadChannels(){
-    const res = await fetch('https://YOUR_WORKER_DOMAIN/'); // Worker endpoint که JSON لینک‌ها را می‌دهد
-    const data = await res.json(); // باید Worker لینک‌ها را JSON بدهد
+    const res = await fetch('https://YOUR_WORKER_DOMAIN/'); // Worker URL
+    const data = await res.json();
     const grid = document.getElementById("channelGrid");
     for(let key in data){
         const ch = data[key];
         const div = document.createElement("div");
         div.className="card";
         div.innerHTML=`<img src="${ch.logo}"><span>${ch.name}</span>`;
-        div.onclick = ()=>openChannel(key, data);
+        div.onclick = ()=>openChannel(key,data);
         grid.appendChild(div);
     }
 }
 
-function openChannel(key, channels){
+function openChannel(key,channels){
     currentChannel = channels[key];
     currentLinks = currentChannel.sources;
     document.getElementById("channelTitle").innerText=currentChannel.name;
@@ -77,7 +77,7 @@ function openChannel(key, channels){
     document.getElementById("homePage").style.display="none";
     document.getElementById("playerPage").style.display="block";
 
-    loadStream(currentLinks[0]); // اولین لینک
+    loadStream(currentLinks[0]);
     updateLinkSelector();
 }
 
